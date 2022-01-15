@@ -32,7 +32,23 @@ const generateId = () => {
 
 const app = express();
 app.use(express.json());
-app.use(morgan('tiny'));
+app.use(
+  morgan((tokens, req, res) => {
+    const tinyConfig = [
+      tokens.method(req, res),
+      tokens.url(req, res),
+      tokens.status(req, res),
+      tokens.res(req, res, 'content-length'),
+      '-',
+      tokens['response-time'](req, res),
+      'ms',
+    ].join(' ');
+    if (req.method === 'POST') {
+      return tinyConfig.concat(' ', JSON.stringify(req.body));
+    }
+    return tinyConfig
+  })
+);
 
 app.post('/api/persons', (req, res) => {
   if (!req.body.name) {
@@ -47,7 +63,7 @@ app.post('/api/persons', (req, res) => {
   }
   const found = persons.find(
     (e) => e.name.toLowerCase() === req.body.name.toLowerCase()
-  )
+  );
   if (found) {
     return res.status(422).json({
       error: 'name must be unique',
