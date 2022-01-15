@@ -33,9 +33,22 @@ const app = express();
 app.use(express.json());
 
 app.post('/api/persons', (req, res) => {
-  if (!req.body.name || !req.body.number) {
-    return res.status(400).json({
-      error: 'name or number missing',
+  if (!req.body.name) {
+    return res.status(422).json({
+      error: 'name missing',
+    });
+  }
+  if (!req.body.number) {
+    return res.status(422).json({
+      error: 'number missing',
+    });
+  }
+  const found = persons.find(
+    (e) => e.name.toLowerCase() === req.body.name.toLowerCase()
+  )
+  if (found) {
+    return res.status(422).json({
+      error: 'name must be unique',
     });
   }
 
@@ -44,9 +57,7 @@ app.post('/api/persons', (req, res) => {
     name: req.body.name,
     number: req.body.number,
   };
-
-  persons.push(person)
-
+  persons.push(person);
   res.json(person);
 });
 
