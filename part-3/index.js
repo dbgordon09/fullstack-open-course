@@ -2,7 +2,7 @@ import express from 'express';
 
 const PORT = 3001;
 
-const persons = [
+let persons = [
   {
     id: 1,
     name: 'Arto Hellas',
@@ -48,6 +48,13 @@ app.get('/info', (_req, res) => {
     `Phonebook has info for ${persons.length} people<br/><br/>${new Date()}`
   );
 });
+
+
+app.delete('/api/persons/:id', (req, res) => {
+  const id = Number(req.params.id)
+  persons = persons.filter((e) => e.id !== id)
+  res.status(204).end()
+})
 
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
