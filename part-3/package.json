@@ -1,0 +1,21 @@
+{
+  "name": "backend",
+  "version": "0.0.1",
+  "description": "Fullstack open backend",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "dev": "nodemon index.js",
+    "start": "node index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Dale Gordon",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.17.2",
+    "morgan": "^1.10.0"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.15"
+  }
+}
